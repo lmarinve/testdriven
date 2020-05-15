@@ -1,0 +1,49 @@
+{% extends parent_template|default:"tag/base.html" %}
+
+{% block title %}
+  {{ block.super }} - Tag List
+{% endblock %}
+
+{% block content %}
+  <h2>Tag List</h2>
+  {% if perms.organizer.add_tag %}
+    <p>
+      <a href="{% url 'tag_create' %}">
+        Add New Tag
+      </a>
+    <p>
+  {% endif %}
+
+  <ul>
+    {% for tag in tag_list %}
+      <li>
+        <a href="{{ tag.get_absolute_url }}">
+          {{ tag.name|title }}</a>
+      </li>
+    {% empty %}
+      <li><em>There are currently no Tags available.</em></li>
+    {% endfor %}
+  </ul>
+  {% if is_paginated %}
+    <div class="offset-by-four four columns">
+      <ul class="inline">
+        {% if page_obj.has_previous %}
+          <li>
+            <a href="?page={{ page_obj.previous_page_number }}">
+              Previous</a>
+          </li>
+        {% endif %}
+        <li>
+          Page {{ page_obj.number }}
+          of {{ paginator.num_pages }}
+        </li>
+        {% if page_obj.has_next %}
+          <li>
+            <a href="?page={{ page_obj.next_page_number }}">
+              Next</a>
+          </li>
+        {% endif %}
+      </ul>
+    <div>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,126 @@
+<!doctype html>
+{% load static %}
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>{% block title %}Startup Organizer{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css"
+      href="{% static 'css/normalize.css' %}">
+    <link rel="stylesheet" type="text/css"
+      href="{% static 'css/skeleton.css' %}">
+    <link rel="stylesheet" type="text/css"
+      href="{% static 'css/style.css' %}">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#2d89ef">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="alternate" title="Blog News RSS"
+      type="application/rss+xml"
+      href="{% url 'post_rss_feed' %}">
+    <link rel="alternate" title="Blog News Atom"
+      type="application/atom+xml"
+      href="{% url 'post_atom_feed' %}">
+  </head>
+  <body>
+    <div class="container">
+      <!--[if lte IE 9]>
+        <div class="row">
+          <p class="browserupgrade">
+            You are using an <strong>outdated</strong> browser. Please
+            <a href="https://browsehappy.com/">upgrade your browser</a>
+            to improve your experience and security.
+          </p>
+        </div>
+      <![endif]-->
+
+      {% if messages %}
+        <div class="row">
+          <div class="twelve columns">
+            <ul class="messages">
+              {% for message in messages %}
+                {% if message.tags %}
+                  <li class="{{ message.tags }}">
+                {% else %}
+                  <li>
+                {% endif %}
+                {{ message }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      {% endif %}
+
+      <div class="status row">
+        <div class="offset-by-eight four columns">
+          <ul class="inline">
+            {% if user.is_authenticated %}
+              <li><a href="{% url 'auth:account' %}">
+                Manage Account</a></li>
+              <li><a href="{% url 'auth:logout' %}">
+                Log Out</a></li>
+            {% else %}
+              <li><a href="{% url 'auth:django_registration_register' %}">
+                Register</a></li>
+              <li><a href="{% url 'auth:login' %}?next={{ request.path }}">
+                Log In</a></li>
+            {% endif %}
+          </ul>
+        </div><!-- four columns -->
+      </div><!-- status row -->
+
+      <header class="row">
+        <div class="offset-by-one ten columns">
+          <h1 class="logo">Startup Organizer</h1>
+        </div>
+      </header>
+
+      <nav>
+        <ul>
+          <li><a href="{% url 'post_list' %}">Blog</a></li>
+          <li><a href="{% url 'startup_list' %}">Startups</a></li>
+          <li><a href="{% url 'tag_list' %}">Tags</a></li>
+          <li><a href="{% url 'api-root' %}">Browse API</a></li>
+        </ul>
+      </nav>
+
+      <main>
+      {% block content %}{% endblock %}
+      </main>
+
+    </div><!-- container-->
+
+    <footer>
+      <p>
+        Built by
+        <a href="https://andrewsforge.com">Andrew Pinkham</a>
+        under the
+        <a href="https://opensource.org/licenses/BSD-2-Clause">
+          Simplified BSD License</a>.
+      </p>
+      <ul>
+        <li>
+          <a href="{% url 'sitemap' %}">
+            Sitemap</a>
+        </li>
+        <li>
+          <a
+              href="{% url 'post_rss_feed' %}"
+              class="feed">
+            Blog RSS Feed</a>
+        </li>
+        <li>
+          <a
+              href="{% url 'post_atom_feed' %}"
+              class="feed">
+            Blog Atom Feed</a>
+        </li>
+      </ul>
+    <footer>
+
+  </body>
+</html>
